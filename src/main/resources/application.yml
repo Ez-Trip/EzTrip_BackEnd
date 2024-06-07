@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: eztrip
+
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(kXpaX1uIwfb1M0I4wvDD/cqLP+8KUl4JXBxQxK3CZh8HwfihXOYNJC/BhlJcY8c0/i86NQaeLFeXqpE1ZUG4twZX5C1riN72T8heSxRJ+WqEPl7NeLwuofYIckv4yor83S51JyUJ15ysJVx7RekbHw==)
+    username: ENC(9L3iLbrf57tR0TrHxjKxeQ==)
+    password: ENC(ryUBhj9rImkprVA93hKsWOlJzjYryrxI)
+
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+      dialect: org.hibernate.dialect.MySQL8InnoDBDialect
+
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+jasypt:
+  encryptor:
+    password: ${PASSWORD}
+
+token:
+  secret: ENC(t5jyiruwmgUy+I8w4oRxNu08d0NTDkLf) # ??? ???
+  access-token-expiration-time: 90000000 # 15? 1000(ms) x 60(s) x 15(m) (* 10 : ???? -> 150?)
+  refresh-token-expiration-time: 1209600000 # 2? 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)
