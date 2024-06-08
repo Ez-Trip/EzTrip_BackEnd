@@ -16,5 +16,17 @@ public class MemberDto {
         private String nickname;
 
         private String phoneNumber;
+
+        private String image;
+
+        private String birth;
+
+        private String gender;
+
+        private Integer age;
+
+        private Boolean push;
+
+        private Boolean information;
     }
 }
