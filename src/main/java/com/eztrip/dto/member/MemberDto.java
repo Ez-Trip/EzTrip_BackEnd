@@ -28,5 +28,7 @@ public class MemberDto {
         private Boolean push;
 
         private Boolean information;
+
+        private String categories;
     }
 }

@@ -28,6 +28,9 @@ public enum ErrorCode {
     NOT_EXISTS_PASSWORD(HttpStatus.NOT_FOUND, "Password가 일치하지 않습니다."),
     ALREADY_REGISTERED_USERNAME(HttpStatus.BAD_REQUEST, "이미 가입된 아이디입니다."),
     ALREADY_REGISTERED_EMAIL(HttpStatus.BAD_REQUEST, "이미 가입된 Email 입니다."),
+
+    // 카테고리
+    NOT_FOUND_CATEGORY(HttpStatus.NOT_FOUND, "해당 카테고리는 존재하지 않습니니다."),
     ;
 
     ErrorCode(HttpStatus httpStatus, String message) {

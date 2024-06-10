@@ -1,5 +1,6 @@
 package com.eztrip.entity.member;
 
+import com.eztrip.entity.category.MemberCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,13 +9,16 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id; // 식별자
 
@@ -46,6 +50,9 @@ public class Member {
     private String refreshToken; // 리프레시 토큰
 
     private LocalDateTime tokenExpirationTime; // 토큰 만료 시간
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<MemberCategory> memberCategories = new ArrayList<>();
 
     @Builder
     public Member(String username, String email, String password, String nickname, String phoneNumber, String birth, String gender, Integer age, Role role, Boolean push, Boolean information) {
