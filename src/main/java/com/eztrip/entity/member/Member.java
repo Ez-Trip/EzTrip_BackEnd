@@ -55,12 +55,13 @@ public class Member {
     private List<MemberCategory> memberCategories = new ArrayList<>();
 
     @Builder
-    public Member(String username, String email, String password, String nickname, String phoneNumber, String birth, String gender, Integer age, Role role, Boolean push, Boolean information) {
+    public Member(String username, String email, String password, String nickname, String phoneNumber, String image, String birth, String gender, Integer age, Role role, Boolean push, Boolean information) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
+        this.image = image;
         this.birth = birth;
         this.gender = gender;
         this.age = age;

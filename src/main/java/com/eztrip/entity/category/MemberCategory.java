@@ -27,5 +27,5 @@ public class MemberCategory {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    private Integer preference;
+    private Integer preference; // 선호도
 }

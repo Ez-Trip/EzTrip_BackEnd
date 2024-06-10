@@ -47,11 +47,19 @@ public class MemberService {
                 .email(dto.getEmail())
                 .nickname(dto.getNickname())
                 .phoneNumber(dto.getPhoneNumber())
+                .image(dto.getImage())
+                .birth(dto.getBirth())
+                .gender(dto.getGender())
+                .age(dto.getAge())
                 .role(Role.USER)
+                .push(dto.getPush())
+                .information(dto.getInformation())
                 .build();
 
         joinMember.hashPassword(encoder); // 비밀번호 암호화
 
+        // 카테고리가 선호도에 따라서 순차적으로 입려된 하나의 문자열로 전달
+        // 숫자를 기준으로 잘림 (A1B1C1 -> {"A1", "B1", "C1"})
         String[] categories = dto.getCategories().split("(?<=\\d)(?=\\D)");
 
         // 카테고리 연관관계 등록
