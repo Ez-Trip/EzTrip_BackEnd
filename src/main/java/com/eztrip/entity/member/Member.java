@@ -14,8 +14,8 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor // 인자값이 없는 디폴트 생성자 선언
+@AllArgsConstructor // 전체 필드를 인자로 갖는 생성자 선언
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

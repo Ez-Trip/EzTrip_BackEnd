@@ -6,6 +6,8 @@ import com.eztrip.entity.member.Member;
 import com.eztrip.entity.member.Role;
 import com.eztrip.global.error.ErrorCode;
 import com.eztrip.global.error.exception.EntityNotFoundException;
+import com.eztrip.global.token.JwtTokenDto;
+import com.eztrip.global.token.TokenManager;
 import com.eztrip.repository.category.CategoryRepository;
 import com.eztrip.repository.member.MemberRepository;
 import com.eztrip.service.category.MemberCategoryService;
@@ -19,11 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberService {
 
+    // 자바에서 final 키워드가 달린 필드는 생성자에서 값을 넣어주지 않으면 에러를 발생시킨다
     private final MemberRepository memberRepository;
 
     private final MemberCategoryService memberCategoryService;
 
     private final CategoryRepository categoryRepository;
+
+    private final TokenManager tokenManager;
 
     private final PasswordEncoder encoder;
 
@@ -74,6 +79,17 @@ public class MemberService {
         memberRepository.save(joinMember);
     }
 
+    // 로그인
+    @Transactional
+    public JwtTokenDto login(String username, String password) {
+
+        Member loginMember = findByUsernameAndPassword(username, password);
+
+        JwtTokenDto token = tokenManager.createJwtTokenDto(loginMember.getId(), loginMember.getUsername(), loginMember.getRole());
+
+        return token;
+    }
+
     // 식별자로 확인
     public Member findById(Long id){
 
@@ -95,7 +111,17 @@ public class MemberService {
         return findMember;
     }
 
+    // 로그아웃 (refresh token 만료)
+    @Transactional
+    public void logout(Long id) {
+
+        Member findMember = findById(id);
+
+        findMember.logout();
+    }
+
     // 회원 탈퇴
+    @Transactional
     public void deleteMember(Long id) {
 
         memberRepository.deleteById(id);

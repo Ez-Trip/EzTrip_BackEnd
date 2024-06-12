@@ -31,4 +31,12 @@ public class MemberDto {
 
         private String categories;
     }
+
+    @Data
+    public static class Login{
+
+        private String username;
+
+        private String password;
+    }
 }
