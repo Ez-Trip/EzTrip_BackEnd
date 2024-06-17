@@ -23,6 +23,6 @@ public class Category {
 
     private String title; // 이름
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<MemberCategory> memberCategories = new ArrayList<>();
+//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+//    private List<MemberCategory> memberCategories = new ArrayList<>();
 }
