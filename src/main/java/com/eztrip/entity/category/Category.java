@@ -23,6 +23,16 @@ public class Category {
 
     private String title; // 이름
 
-//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-//    private List<MemberCategory> memberCategories = new ArrayList<>();
+
+    // 새로 추가한 부분
+    public Category(String id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
+
+
+    // mappedBy = "category"로 수정 (MemberCategory에서 Category를 가리키는 필드)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<MemberCategory> memberCategories = new ArrayList<>();
 }

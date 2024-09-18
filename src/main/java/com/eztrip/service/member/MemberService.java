@@ -1,6 +1,7 @@
 package com.eztrip.service.member;
 
 import com.eztrip.dto.member.MemberDto;
+import com.eztrip.dto.member.MemberUpdate;
 import com.eztrip.entity.category.Category;
 import com.eztrip.entity.member.Member;
 import com.eztrip.entity.member.Role;
@@ -126,4 +127,24 @@ public class MemberService {
 
         memberRepository.deleteById(id);
     }
+
+    @Transactional
+    public void update(Long id, MemberUpdate updateDto) {
+
+        Member findMember = findById(id);
+
+        /*
+        여기서 생기는 궁금증 ??
+        - DB에 save를 안했는데 어떻게 끝나요 이게
+        - 지금 해준 작업은 id로 회원 객체를 찾았어 -> member field update
+        - db update X
+        - JPA 변경감지
+         */
+        findMember.update(updateDto);
+    }
+
+
+    // 카테고리 디비에서 조회 후 저장하는 부분
+
+
 }

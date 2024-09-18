@@ -1,5 +1,6 @@
 package com.eztrip.entity.member;
 
+import com.eztrip.dto.member.MemberUpdate;
 import com.eztrip.entity.category.MemberCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -76,11 +77,26 @@ public class Member {
     }
 
     public boolean checkPassword(String plainPassword, PasswordEncoder encoder){
+        // System.out.println(plainPassword + " : "+this.password);
+        // System.out.println(encoder.matches(plainPassword, this.password));
         return encoder.matches(plainPassword, this.password);
     }
 
     public void logout() {
 
         this.tokenExpirationTime = LocalDateTime.now();
+    }
+
+    public void update(MemberUpdate updateDto) {
+
+        this.username = updateDto.username();
+        this.email = updateDto.email();
+        this.password = updateDto.password();
+        this.nickname = updateDto.nickname();
+        this.phoneNumber = updateDto.phoneNumber();
+        this.image = updateDto.image();
+        this.birth = updateDto.birth();
+        this.gender = updateDto.gender();
+        this.age = updateDto.age();
     }
 }

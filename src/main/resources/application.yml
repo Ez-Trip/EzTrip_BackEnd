@@ -5,9 +5,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ENC(kXpaX1uIwfb1M0I4wvDD/cqLP+8KUl4JXBxQxK3CZh8HwfihXOYNJC/BhlJcY8c0/i86NQaeLFeXqpE1ZUG4twZX5C1riN72T8heSxRJ+WqEPl7NeLwuofYIckv4yor83S51JyUJ15ysJVx7RekbHw==)
-    username: ENC(9L3iLbrf57tR0TrHxjKxeQ==)
-    password: ENC(ryUBhj9rImkprVA93hKsWOlJzjYryrxI)
+    url: ENC(35NMjwoHz0i9R3iH/u5TtzMfa5W5Z1Z7QLHue4n2crdODVhzl/fzh1OzW/7iNtnp) # jdbc:mysql://localhost:3306/Ez_Trip
+    username: ENC(4aFRnIW3uDZQBNpDcmNAtA==) # root
+    password: ENC(zxOZng26KwcFIIdQGXfxZlU5hPpm3cf1) # q1w2e3r4
 
 
   jpa:
@@ -20,17 +20,17 @@ spring:
     properties:
       hibernate.format_sql: true
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
-
-
+#
+#
 logging:
   level:
     org.hibernate.SQL: debug
 
 jasypt:
   encryptor:
-    password: ${PASSWORD}
+    password: ${PASSWORD}              #mySuperSecretPassword123!
 
 token:
-  secret: ENC(t5jyiruwmgUy+I8w4oRxNu08d0NTDkLf) # ??? ???
+  secret: ENC(Be7sbMwJrCorj0oMWO7pZfxvVGs5lMoS5iaMdD04Ccw=) # TokenSecretkeySample
   access-token-expiration-time: 90000000 # 15? 1000(ms) x 60(s) x 15(m) (* 10 : ???? -> 150?)
   refresh-token-expiration-time: 1209600000 # 2? 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)

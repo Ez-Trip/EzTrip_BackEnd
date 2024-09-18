@@ -1,11 +1,14 @@
 package com.eztrip.controller.member;
 
 import com.eztrip.dto.member.MemberDto;
+import com.eztrip.dto.member.MemberUpdate;
 import com.eztrip.global.token.JwtTokenDto;
 import com.eztrip.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/eztrip")
@@ -19,10 +22,15 @@ public class MemberController {
      */
     @PostMapping("/join")
     public ResponseEntity<?> joinMember(@RequestBody MemberDto.Join dto) {
-
         memberService.join(dto);
 
-        return ResponseEntity.ok(dto.getUsername());
+        // 응답 메시지를 조금 더 상세하게 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "User " + dto.getUsername() + " has been registered successfully.");
+        response.put("data", dto);
+
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -45,5 +53,17 @@ public class MemberController {
         memberService.logout(id);
 
         return ResponseEntity.ok("Logout Success");
+    }
+
+    /**
+     * 회원 정보 수정 API
+     */
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<?> update(@RequestBody MemberUpdate updateDto,
+                                    @PathVariable("id") Long id) {
+
+        memberService.update(id, updateDto);
+
+        return ResponseEntity.ok("success");
     }
 }

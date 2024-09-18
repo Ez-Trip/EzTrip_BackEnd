@@ -8,7 +8,10 @@ public class JasyptTest {
     @Test
     public void jasyptTest(){
 
-        String password = "";
+        /*
+        Password + Encoding Algorithm + content -> 아예 다른 String
+         */
+        String password = "mySuperSecretPassword123!";
 
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         encryptor.setPoolSize(4);
