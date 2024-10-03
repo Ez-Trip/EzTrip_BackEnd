@@ -2,6 +2,7 @@ package com.eztrip.entity.member;
 
 import com.eztrip.dto.member.MemberUpdate;
 import com.eztrip.entity.category.MemberCategory;
+import com.eztrip.entity.schedule.Schedule;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,11 +16,12 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor // 인자값이 없는 디폴트 생성자 선언
-@AllArgsConstructor // 전체 필드를 인자로 갖는 생성자 선언
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id; // 식별자
 
@@ -55,6 +57,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<MemberCategory> memberCategories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Schedule> schedules = new ArrayList<>(); // 사용자의 일정 리스트
+
     @Builder
     public Member(String username, String email, String password, String nickname, String phoneNumber, String image, String birth, String gender, Integer age, Role role, Boolean push, Boolean information) {
         this.username = username;
@@ -77,18 +82,14 @@ public class Member {
     }
 
     public boolean checkPassword(String plainPassword, PasswordEncoder encoder){
-        // System.out.println(plainPassword + " : "+this.password);
-        // System.out.println(encoder.matches(plainPassword, this.password));
         return encoder.matches(plainPassword, this.password);
     }
 
     public void logout() {
-
         this.tokenExpirationTime = LocalDateTime.now();
     }
 
     public void update(MemberUpdate updateDto) {
-
         this.username = updateDto.username();
         this.email = updateDto.email();
         this.password = updateDto.password();
@@ -98,5 +99,10 @@ public class Member {
         this.birth = updateDto.birth();
         this.gender = updateDto.gender();
         this.age = updateDto.age();
+    }
+
+    public void addSchedule(Schedule schedule) {
+        this.schedules.add(schedule);
+        schedule.setMember(this);
     }
 }
