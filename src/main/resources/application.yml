@@ -5,7 +5,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ENC(35NMjwoHz0i9R3iH/u5TtzMfa5W5Z1Z7QLHue4n2crdODVhzl/fzh1OzW/7iNtnp) # jdbc:mysql://localhost:3306/Ez_Trip
+    url: ENC(2Z08pT7uhii5nqcfEtydRw4dVtMCL+OicCsuMnvBAZCRu4ge1SMrnRREgu3+9ZrI) # jdbc:mysql://localhost:3306/Ez_Trip
     username: ENC(4aFRnIW3uDZQBNpDcmNAtA==) # root
     password: ENC(zxOZng26KwcFIIdQGXfxZlU5hPpm3cf1) # q1w2e3r4
 
