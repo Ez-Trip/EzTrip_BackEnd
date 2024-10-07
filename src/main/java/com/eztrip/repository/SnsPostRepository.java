@@ -1,4 +1,4 @@
-package com.eztrip.repository.sns;
+package com.eztrip.repository;
 
 import com.eztrip.entity.sns.SnsPost;
 import org.springframework.data.jpa.repository.JpaRepository;

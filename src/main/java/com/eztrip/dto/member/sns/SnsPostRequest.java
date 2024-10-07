@@ -1,4 +1,4 @@
-package com.eztrip.controller.sns;
+package com.eztrip.dto.member.sns;
 
 import lombok.Getter;
 import lombok.Setter;
