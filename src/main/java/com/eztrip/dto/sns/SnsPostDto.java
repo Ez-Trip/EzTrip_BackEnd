@@ -1,4 +1,4 @@
-package com.eztrip.dto.member.sns;
+package com.eztrip.dto.sns;
 
 import com.eztrip.entity.sns.SnsPost;
 

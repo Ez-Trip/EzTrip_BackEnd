@@ -1,6 +1,7 @@
 package com.eztrip.entity.schedule;
 
 import com.eztrip.entity.member.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class Schedule {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @JsonBackReference  // 순환 참조 방지
     private Member member;  // 일정의 사용자 (다대일 관계)
 
     public void setMember(Member member) {

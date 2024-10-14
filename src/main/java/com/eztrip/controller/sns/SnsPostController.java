@@ -1,7 +1,7 @@
 package com.eztrip.controller.sns;
 
-import com.eztrip.dto.member.sns.SnsPostDto;
-import com.eztrip.dto.member.sns.SnsPostRequest;
+import com.eztrip.dto.sns.SnsPostDto;
+import com.eztrip.dto.sns.SnsPostRequest;
 import com.eztrip.entity.sns.SnsPost;
 import com.eztrip.service.sns.SnsPostService;
 import lombok.RequiredArgsConstructor;

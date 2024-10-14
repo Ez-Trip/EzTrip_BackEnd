@@ -1,6 +1,6 @@
 package com.eztrip.service.sns;
 
-import com.eztrip.dto.member.sns.SnsPostRequest;
+import com.eztrip.dto.sns.SnsPostRequest;
 import com.eztrip.entity.member.Member;
 import com.eztrip.entity.sns.SnsPost;
 import com.eztrip.repository.member.MemberRepository;
