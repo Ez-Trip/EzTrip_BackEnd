@@ -4,6 +4,8 @@ import com.eztrip.dto.member.MemberDto;
 import com.eztrip.dto.member.MemberUpdate;
 import com.eztrip.global.token.JwtTokenDto;
 import com.eztrip.service.member.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/eztrip")
 @RequiredArgsConstructor
+@Tag(name = "eztrip", description = "설명.")
 public class MemberController {
 
     private final MemberService memberService;
@@ -21,6 +24,8 @@ public class MemberController {
      * 회원가입 API
      */
     @PostMapping("/join")
+    @Tag(name = "eztrip")
+    @Operation(summary = "join", description = "회원가입")
     public ResponseEntity<?> joinMember(@RequestBody MemberDto.Join dto) {
         memberService.join(dto);
 

@@ -2,6 +2,10 @@ spring:
   application:
     name: eztrip
 
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -34,3 +38,10 @@ token:
   secret: ENC(Be7sbMwJrCorj0oMWO7pZfxvVGs5lMoS5iaMdD04Ccw=) # TokenSecretkeySample
   access-token-expiration-time: 90000000 # 15? 1000(ms) x 60(s) x 15(m) (* 10 : ???? -> 150?)
   refresh-token-expiration-time: 1209600000 # 2? 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)
+
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
