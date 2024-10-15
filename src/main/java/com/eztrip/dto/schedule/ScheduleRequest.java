@@ -1,6 +1,7 @@
 package com.eztrip.dto.schedule;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class ScheduleRequest {
     private String title;       // 스케줄 제목
@@ -8,20 +9,10 @@ public class ScheduleRequest {
     private LocalDate date;     // 날짜
     private String image;       // 이미지 경로 (URL)
     private Long memberId;      // 사용자 ID (memberId)
+    private int price;          // 총 금액
+    private List<PathDetailRequest> pathDetails;  // 상세 경로 정보
 
-    // 기본 생성자
-    public ScheduleRequest() {}
-
-    // 모든 필드를 사용하는 생성자
-    public ScheduleRequest(String title, String path, LocalDate date, String image, Long memberId) {
-        this.title = title;
-        this.path = path;
-        this.date = date;
-        this.image = image;
-        this.memberId = memberId;
-    }
-
-    // Getter와 Setter 메서드
+    // getter와 setter
     public String getTitle() {
         return title;
     }
@@ -60,5 +51,71 @@ public class ScheduleRequest {
 
     public void setMemberId(Long memberId) {
         this.memberId = memberId;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public List<PathDetailRequest> getPathDetails() {
+        return pathDetails;
+    }
+
+    public void setPathDetails(List<PathDetailRequest> pathDetails) {
+        this.pathDetails = pathDetails;
+    }
+
+    // 내부 클래스 PathDetailRequest 정의
+    public static class PathDetailRequest {
+        private String segmentCode;  // 경로 세그먼트 코드 (A1, B2 등)
+        private String placeName;    // 장소 이름
+        private String address;      // 주소
+        private int price;           // 가격
+        private String segmentType;  // 세그먼트 유형 (예: 음식점, 숙박업소 등)
+
+        // getter와 setter
+        public String getSegmentCode() {
+            return segmentCode;
+        }
+
+        public void setSegmentCode(String segmentCode) {
+            this.segmentCode = segmentCode;
+        }
+
+        public String getPlaceName() {
+            return placeName;
+        }
+
+        public void setPlaceName(String placeName) {
+            this.placeName = placeName;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public int getPrice() {
+            return price;
+        }
+
+        public void setPrice(int price) {
+            this.price = price;
+        }
+
+        public String getSegmentType() {
+            return segmentType;
+        }
+
+        public void setSegmentType(String segmentType) {
+            this.segmentType = segmentType;
+        }
     }
 }
