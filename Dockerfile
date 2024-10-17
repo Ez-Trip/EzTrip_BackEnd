@@ -1,4 +1,4 @@
-# OpenJDK 17을 기반 이미지로 사용
+# OpenJDK 22을 기반 이미지로 사용
 FROM openjdk:22-jdk-slim
 
 # 컨테이너 내부의 작업 디렉토리 설정
