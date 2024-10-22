@@ -1,7 +1,8 @@
 package com.eztrip.service.schedule;
 
-import com.eztrip.dto.schedule.ScheduleRequest;
 import com.eztrip.entity.member.Member;
+import com.eztrip.entity.category.MemberCategory;
+import com.eztrip.dto.schedule.ScheduleRequest;
 import com.eztrip.entity.schedule.PathDetail;
 import com.eztrip.entity.schedule.Schedule;
 import com.eztrip.repository.member.MemberRepository;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,22 +27,15 @@ public class ScheduleService {
         Member member = memberRepository.findById(scheduleRequest.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. ID: " + scheduleRequest.getMemberId()));
 
-        // Schedule 객체 생성
         Schedule schedule = Schedule.builder()
                 .title(scheduleRequest.getTitle())
                 .path(scheduleRequest.getPath())
                 .date(scheduleRequest.getDate())
                 .image(scheduleRequest.getImage())
-                .price(scheduleRequest.getPrice())  // 총 금액 설정
+                .price(scheduleRequest.getPrice())
                 .member(member)
                 .build();
 
-        // pathDetails가 null이면 빈 리스트로 초기화
-        if (schedule.getPathDetails() == null) {
-            schedule.setPathDetails(new ArrayList<>());
-        }
-
-        // PathDetail 리스트 추가
         List<PathDetail> pathDetails = new ArrayList<>();
         for (ScheduleRequest.PathDetailRequest detailRequest : scheduleRequest.getPathDetails()) {
             PathDetail pathDetail = PathDetail.builder()
@@ -54,16 +49,17 @@ public class ScheduleService {
             pathDetails.add(pathDetail);
         }
 
-        // Schedule 객체에 PathDetail 추가
-        schedule.getPathDetails().addAll(pathDetails);
-        schedule.setTotalPrice();  // 총 금액 계산 및 설정
+        schedule.setPathDetails(pathDetails);
+        schedule.setTotalPrice();
         return scheduleRepository.save(schedule);
     }
 
+    @Transactional(readOnly = true)
     public List<Schedule> getAllSchedules() {
         return scheduleRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Schedule getScheduleById(Long id) {
         return scheduleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("일정을 찾을 수 없습니다. ID: " + id));
@@ -71,6 +67,29 @@ public class ScheduleService {
 
     @Transactional
     public void deleteSchedule(Long id) {
+        if (!scheduleRepository.existsById(id)) {
+            throw new IllegalArgumentException("삭제할 스케줄이 존재하지 않습니다. ID: " + id);
+        }
         scheduleRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Schedule updateSchedule(Long id, ScheduleRequest scheduleRequest) {
+        Schedule existingSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("업데이트할 스케줄을 찾을 수 없습니다. ID: " + id));
+        existingSchedule.updateSchedule(scheduleRequest);
+        return scheduleRepository.save(existingSchedule);
+    }
+
+    // **회원의 선호도 정보를 가져오는 메서드 추가**
+    @Transactional(readOnly = true)
+    public String getMemberPreference(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. ID: " + memberId));
+
+        // 모든 MemberCategory의 preferenceCode를 연결하여 반환
+        return member.getMemberCategories().stream()
+                .map(MemberCategory::getPreferenceCode) // A1B2 형식으로 연결
+                .collect(Collectors.joining());
     }
 }

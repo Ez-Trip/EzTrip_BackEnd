@@ -23,45 +23,35 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long id; // 식별자
+    private Long id;
 
-    private String username; // 우리가 로그인 할 때 쓰는 ID
-
-    private String email; // email
-
-    private String password; // 비밀번호
-
-    private String nickname; // 닉네임
-
-    private String phoneNumber; // 전화번호
-
-    private String image; // 프로필 사진
-
-    private String birth; // 생년월일 (문자열)
-
-    private String gender; // 성별 TODO : Enum 타입 고려
-
-    private Integer age; // 나이 (정수값)
-
-    private Boolean push; // 푸쉬 동의
-
-    private Boolean information; // 정보 제공 동의
+    private String username;
+    private String email;
+    private String password;
+    private String nickname;
+    private String phoneNumber;
+    private String image;
+    private String birth;
+    private String gender;
+    private Integer age;
+    private Boolean push;
+    private Boolean information;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // 역할
+    private Role role;
 
-    private String refreshToken; // 리프레시 토큰
-
-    private LocalDateTime tokenExpirationTime; // 토큰 만료 시간
+    private String refreshToken;
+    private LocalDateTime tokenExpirationTime;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<MemberCategory> memberCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Schedule> schedules = new ArrayList<>(); // 사용자의 일정 리스트
+    private List<Schedule> schedules = new ArrayList<>();
 
     @Builder
-    public Member(String username, String email, String password, String nickname, String phoneNumber, String image, String birth, String gender, Integer age, Role role, Boolean push, Boolean information) {
+    public Member(String username, String email, String password, String nickname, String phoneNumber, String image,
+                  String birth, String gender, Integer age, Role role, Boolean push, Boolean information) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -76,12 +66,12 @@ public class Member {
         this.information = information;
     }
 
-    public Member hashPassword(PasswordEncoder encoder){
+    public Member hashPassword(PasswordEncoder encoder) {
         this.password = encoder.encode(this.password);
         return this;
     }
 
-    public boolean checkPassword(String plainPassword, PasswordEncoder encoder){
+    public boolean checkPassword(String plainPassword, PasswordEncoder encoder) {
         return encoder.matches(plainPassword, this.password);
     }
 

@@ -28,4 +28,9 @@ public class MemberCategory {
     private Category category;
 
     private Integer preference; // 선호도
+
+    // preference를 기반으로 코드 형식으로 반환하는 메서드
+    public String getPreferenceCode() {
+        return category.getId() + preference;  // 예: A1, B2와 같은 형식 반환
+    }
 }
