@@ -1,43 +1,31 @@
 package com.eztrip.global.config;
 
+import com.eztrip.global.token.JwtAuthenticationFilter;
 import com.eztrip.global.token.TokenManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
-    @Value("${token.access-token-expiration-time}")
-    private String accessTokenExpirationTime;
-    @Value("${token.refresh-token-expiration-time}")
-    private String refreshTokenExpirationTime;
-    @Value("${token.secret}")
-    private String tokenSecret;
-
-    @Bean
-    public TokenManager tokenManager() {
-        return new TokenManager(accessTokenExpirationTime, refreshTokenExpirationTime, tokenSecret);
-    }
+    private final TokenManager tokenManager;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         return http
-                .httpBasic(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll())
-                .httpBasic(httpBasic -> httpBasic.disable())
-                .formLogin(formLogin -> formLogin.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .anyRequest().permitAll()
+                )
+                .addFilterBefore(new JwtAuthenticationFilter(tokenManager),
+                        UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

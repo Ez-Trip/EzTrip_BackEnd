@@ -7,22 +7,28 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class TokenManager {
 
-    private final String accessTokenExpirationTime;
+    @Value("${token.access-token-expiration-time}")
+    private long accessTokenExpirationTime;
 
-    private final String refreshTokenExpirationTime;
+    @Value("${token.refresh-token-expiration-time}")
+    private long refreshTokenExpirationTime;
 
-    private final String tokenSecret;
+    @Value("${token.secret}")
+    private String tokenSecret;
 
-
-    public JwtTokenDto createJwtTokenDto(Long id, String username, Role role){
+    public JwtTokenDto createJwtTokenDto(Long id, String username, Role role) {
         Date accessTokenExpireTime = createAccessTokenExpireTime();
         Date refreshTokenExpireTime = createRefreshTokenExpireTime();
 
@@ -41,60 +47,29 @@ public class TokenManager {
                 .build();
     }
 
-    public JwtTokenDto createJwtTokenDtoByOauth(Long id, String username, Role role, String nickname, String memberType, String profile, String accessToken, String accessTokenExpirationTime, String refreshToken, String refreshTokenExpirationTime){
-
-        Date currentTime = new Date();
-
-        // accessTokenExpireTime과 refreshTokenExpireTime을 Integer로 변환
-        int accessTokenExpireTimeInt = Integer.parseInt(accessTokenExpirationTime);
-        int refreshTokenExpireTimeInt = Integer.parseInt(refreshTokenExpirationTime);
-
-        // 현재 시간에 만료 시간(밀리초)을 더하여 만료 시간 계산
-        Date accessTokenExpiryDate = new Date(currentTime.getTime() + accessTokenExpireTimeInt);
-        Date refreshTokenExpiryDate = new Date(currentTime.getTime() + refreshTokenExpireTimeInt);
-
-        return JwtTokenDto.builder()
-                .id(id)
-                .username(username)
-                .role(role)
-                .nickname(nickname)
-                .memberType(memberType)
-                .profile(profile)
-                .grantType(GrantType.BEARER.getType())
-                .accessToken(accessToken)
-                .accessTokenExpireTime(accessTokenExpiryDate)
-                .refreshToken(refreshToken)
-                .refreshTokenExpireTime(refreshTokenExpiryDate)
-                .build();
-    }
-
     public Date createAccessTokenExpireTime() {
-        // 현재시간 + 15min
-        return new Date(System.currentTimeMillis() + Long.parseLong(accessTokenExpirationTime));
+        return new Date(System.currentTimeMillis() + accessTokenExpirationTime);
     }
 
     public Date createRefreshTokenExpireTime() {
-        // 현재시간 + 2week
-        return new Date(System.currentTimeMillis() + Long.parseLong(refreshTokenExpirationTime));
+        return new Date(System.currentTimeMillis() + refreshTokenExpirationTime);
     }
 
-    public String createAccessToken(Long id, String username, Role role, Date expirationTime){
-        String accessToken = Jwts.builder()
-                .setSubject(TokenType.ACCESS.name())                // token의 제목
-                .setIssuedAt(new Date(System.currentTimeMillis()))  // token이 생성된 시간 (현재 시간)
-                .setExpiration(expirationTime)                      // 만료 시간
-                .claim("id", id)                              // 회원 id
-                .claim("username", username)                  // 회원 username
-                .claim("role", role)                          // 사용자 역할
+    public String createAccessToken(Long id, String username, Role role, Date expirationTime) {
+        return Jwts.builder()
+                .setSubject(TokenType.ACCESS.name())
+                .setIssuedAt(new Date())
+                .setExpiration(expirationTime)
+                .claim("id", id)
+                .claim("username", username)
+                .claim("role", role.name())
                 .signWith(SignatureAlgorithm.HS512, tokenSecret.getBytes(StandardCharsets.UTF_8))
                 .setHeaderParam("type", "JWT")
                 .compact();
-
-        return accessToken;
     }
 
-    public String createRefreshToken(Long id, Date expirationTime){
-        String refreshToken = Jwts.builder()
+    public String createRefreshToken(Long id, Date expirationTime) {
+        return Jwts.builder()
                 .setSubject(TokenType.REFRESH.name())
                 .setIssuedAt(new Date())
                 .setExpiration(expirationTime)
@@ -102,50 +77,40 @@ public class TokenManager {
                 .signWith(SignatureAlgorithm.HS512, tokenSecret.getBytes(StandardCharsets.UTF_8))
                 .setHeaderParam("type", "JWT")
                 .compact();
-
-        return refreshToken;
     }
 
-    // 토큰 검증
-    public String validateToken(String token){
-
-        String username = null;
-
+    public boolean validateToken(String token) {
         try {
             Jwts.parser()
                     .setSigningKey(tokenSecret.getBytes(StandardCharsets.UTF_8))
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .get("username"); //token parsing
-        } catch (ExpiredJwtException e){
-            log.info("token 만료", e);
-            throw new RuntimeException(e); //TODO: Exception 수정
-        } catch (Exception e){
-            log.info("유효하지 않은 token", e);
-            throw new RuntimeException(e); //TODO: Exception 수정
+                    .parseClaimsJws(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            log.warn("토큰이 만료되었습니다.", e);
+            return false;
+        } catch (Exception e) {
+            log.error("유효하지 않은 토큰입니다.", e);
+            return false;
         }
-
-        return username;
     }
 
-    public Claims getTokenClaims(String token){
-        Claims claims;
-
+    public Claims getTokenClaims(String token) {
         try {
-            claims = Jwts.parser()
+            return Jwts.parser()
                     .setSigningKey(tokenSecret.getBytes(StandardCharsets.UTF_8))
-                    .parseClaimsJws(token).getBody();
-        } catch (Exception e){
-            log.info("유효하지 않은 token", e);
-            throw new RuntimeException(e); //TODO: Exception 수정
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            log.error("유효하지 않은 토큰입니다.", e);
+            throw new RuntimeException("Invalid token");
         }
-
-        return claims;
     }
 
-    public Long getUserIdFromClaims(String token){
-
-        return Long.parseLong(getTokenClaims(token).getId());
+    public String getUsernameFromToken(String token) {
+        return getTokenClaims(token).get("username", String.class);
     }
 
+    public Long getUserIdFromToken(String token) {
+        return getTokenClaims(token).get("id", Long.class);
+    }
 }

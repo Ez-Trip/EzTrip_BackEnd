@@ -56,7 +56,7 @@ public class Schedule {
 
     public void setTotalPrice() {
         this.price = this.pathDetails.stream()
-                .mapToInt(PathDetail::getPrice)
+                .mapToInt(PathDetail::getPrice)  // PathDetail의 price 필드 접근
                 .sum();
     }
 

@@ -3,6 +3,7 @@ package com.eztrip.entity.member;
 import com.eztrip.dto.member.MemberUpdate;
 import com.eztrip.entity.category.MemberCategory;
 import com.eztrip.entity.schedule.Schedule;
+import com.eztrip.entity.sns.SnsPost;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,6 +50,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Schedule> schedules = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SnsPost> snsPosts = new ArrayList<>(); // SnsPost와의 양방향 매핑 추가
+
     @Builder
     public Member(String username, String email, String password, String nickname, String phoneNumber, String image,
                   String birth, String gender, Integer age, Role role, Boolean push, Boolean information) {
@@ -94,5 +98,16 @@ public class Member {
     public void addSchedule(Schedule schedule) {
         this.schedules.add(schedule);
         schedule.setMember(this);
+    }
+
+    // SNS 포스트 추가 메서드
+    public void addSnsPost(SnsPost snsPost) {
+        this.snsPosts.add(snsPost);
+        snsPost.setMember(this);
+    }
+
+    // 역할 변경 메서드
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
