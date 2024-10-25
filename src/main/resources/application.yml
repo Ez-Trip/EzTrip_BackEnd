@@ -17,7 +17,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create # 여기를 update 바꾸면 디비 데이터 안날라감
+      ddl-auto: update # 여기를 update 바꾸면 디비 데이터 안날라감
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
