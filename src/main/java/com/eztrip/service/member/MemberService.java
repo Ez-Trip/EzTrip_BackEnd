@@ -136,6 +136,16 @@ public class MemberService {
         findMember.update(updateDto);
     }
 
+    @Transactional
+    public void resetPassword(String username, String email, String newPassword) {
+        // 사용자 조회
+        Member member = memberRepository.findByUsernameAndEmail(username, email)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
+
+        // 새 비밀번호 설정 (암호화 포함)
+        member.setPassword(encoder.encode(newPassword));
+        memberRepository.save(member);
+    }
 
 
 }

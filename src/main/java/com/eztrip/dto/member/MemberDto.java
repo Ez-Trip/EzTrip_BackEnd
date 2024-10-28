@@ -39,4 +39,11 @@ public class MemberDto {
 
         private String password;
     }
+
+    @Data
+    public static class PasswordReset {
+        private String username;
+        private String email;
+        private String newPassword;
+    }
 }

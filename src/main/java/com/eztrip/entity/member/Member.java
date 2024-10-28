@@ -51,7 +51,7 @@ public class Member {
     private List<Schedule> schedules = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SnsPost> snsPosts = new ArrayList<>(); // SnsPost와의 양방향 매핑 추가
+    private List<SnsPost> snsPosts = new ArrayList<>();
 
     @Builder
     public Member(String username, String email, String password, String nickname, String phoneNumber, String image,
@@ -100,14 +100,17 @@ public class Member {
         schedule.setMember(this);
     }
 
-    // SNS 포스트 추가 메서드
     public void addSnsPost(SnsPost snsPost) {
         this.snsPosts.add(snsPost);
         snsPost.setMember(this);
     }
 
-    // 역할 변경 메서드
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    // 새로 추가된 비밀번호 설정 메서드
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
     }
 }

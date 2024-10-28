@@ -71,4 +71,18 @@ public class MemberController {
 
         return ResponseEntity.ok("success");
     }
+
+    /**
+     * 비밀번호 재설정 API
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody MemberDto.PasswordReset dto) {
+        memberService.resetPassword(dto.getUsername(), dto.getEmail(), dto.getNewPassword());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Password has been reset successfully.");
+
+        return ResponseEntity.ok(response);
+    }
 }
