@@ -128,6 +128,7 @@ public class MemberService {
         memberRepository.deleteById(id);
     }
 
+    // ID 찾기
     @Transactional
     public void update(Long id, MemberUpdate updateDto) {
 
@@ -136,6 +137,7 @@ public class MemberService {
         findMember.update(updateDto);
     }
 
+    // PW 재설정
     @Transactional
     public void resetPassword(String username, String email, String newPassword) {
         // 사용자 조회
