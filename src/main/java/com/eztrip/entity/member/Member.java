@@ -4,6 +4,7 @@ import com.eztrip.dto.member.MemberUpdate;
 import com.eztrip.entity.category.MemberCategory;
 import com.eztrip.entity.schedule.Schedule;
 import com.eztrip.entity.sns.SnsPost;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,12 +46,15 @@ public class Member {
     private LocalDateTime tokenExpirationTime;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
     private List<MemberCategory> memberCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // 순환 참조 방지
     private List<Schedule> schedules = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // 순환 참조 방지
     private List<SnsPost> snsPosts = new ArrayList<>();
 
     @Builder

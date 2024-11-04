@@ -79,6 +79,8 @@ public class TokenManager {
                 .compact();
     }
 
+
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
@@ -113,4 +115,11 @@ public class TokenManager {
     public Long getUserIdFromToken(String token) {
         return getTokenClaims(token).get("id", Long.class);
     }
+
+    public String getRoleFromToken(String token) {
+        return getTokenClaims(token).get("role", String.class);
+    }
+
+
+
 }

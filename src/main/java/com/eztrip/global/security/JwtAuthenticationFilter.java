@@ -5,10 +5,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -22,7 +25,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (token != null && tokenManager.validateToken(token)) {
             String username = tokenManager.getUsernameFromToken(token);
-            // 여기서 인증 객체를 만들어 SecurityContext에 설정할 수 있습니다.
+            String role = tokenManager.getRoleFromToken(token);
+
+            logger.debug("Token is valid. Username: " + username + ", Role: " + role);
+
+            // 인증 객체 생성 및 SecurityContext에 설정
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(username, null,
+                            Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            logger.debug("SecurityContext Authentication: " + SecurityContextHolder.getContext().getAuthentication());
+        } else {
+            logger.debug("Token is invalid or not present");
         }
 
         filterChain.doFilter(request, response);
