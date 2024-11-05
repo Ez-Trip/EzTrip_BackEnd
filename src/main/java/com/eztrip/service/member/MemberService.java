@@ -158,6 +158,9 @@ public class MemberService {
         if (memberRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
         }
+        if (memberRepository.findByEmail(dto.getNickname()).isPresent()) {
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+        }
     }
 
 
