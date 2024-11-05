@@ -26,8 +26,11 @@ public enum ErrorCode {
     ALREADY_REGISTERED_MEMBER(HttpStatus.BAD_REQUEST, "이미 가입된 회원입니다."),
     MEMBER_NOT_EXISTS(HttpStatus.NOT_FOUND, "해당 회원은 존재하지 않습니다."),
     NOT_EXISTS_PASSWORD(HttpStatus.NOT_FOUND, "Password가 일치하지 않습니다."),
-    ALREADY_REGISTERED_USERNAME(HttpStatus.BAD_REQUEST, "이미 가입된 아이디입니다."),
-    ALREADY_REGISTERED_EMAIL(HttpStatus.BAD_REQUEST, "이미 가입된 Email 입니다."),
+    DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "이미 사용 중인 리소스입니다."),
+    ALREADY_REGISTERED_USERNAME(HttpStatus.CONFLICT, "이미 가입된 아이디입니다."),
+    ALREADY_REGISTERED_EMAIL(HttpStatus.CONFLICT, "이미 가입된 Email 입니다."),
+    DUPLICATE_USERNAME(HttpStatus.CONFLICT, "이미 사용 중인 아이디입니다."),
+    DUPLICATE_EMAIL(HttpStatus.CONFLICT, "이미 사용 중인 Email 입니다."),
 
     // 카테고리
     NOT_FOUND_CATEGORY(HttpStatus.NOT_FOUND, "해당 카테고리는 존재하지 않습니니다."),

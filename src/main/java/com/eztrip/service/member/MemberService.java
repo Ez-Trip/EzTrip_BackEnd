@@ -6,6 +6,7 @@ import com.eztrip.entity.category.Category;
 import com.eztrip.entity.member.Member;
 import com.eztrip.entity.member.Role;
 import com.eztrip.global.error.ErrorCode;
+import com.eztrip.global.error.exception.BusinessException;
 import com.eztrip.global.error.exception.EntityNotFoundException;
 import com.eztrip.global.token.JwtTokenDto;
 import com.eztrip.global.token.TokenManager;
@@ -35,9 +36,8 @@ public class MemberService {
 
     // 이메일 중복 체크 로직
     private void validateEmail(String email) {
-
-        if(memberRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException(); // TODO: ErrorCode 적용
+        if (memberRepository.findByEmail(email).isPresent()) {
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
         }
     }
 
@@ -46,6 +46,7 @@ public class MemberService {
     public void join(MemberDto.Join dto) {
 
         validateEmail(dto.getEmail());
+        validateDuplicate(dto);  // 중복 검사 추가
 
         Member joinMember = Member.builder()
                 .username(dto.getUsername())
@@ -147,6 +148,16 @@ public class MemberService {
         // 새 비밀번호 설정 (암호화 포함)
         member.setPassword(encoder.encode(newPassword));
         memberRepository.save(member);
+    }
+
+    // 회원가입 중복확인
+    private void validateDuplicate(MemberDto.Join dto) {
+        if (memberRepository.findByUsername(dto.getUsername()).isPresent()) {
+            throw new BusinessException(ErrorCode.DUPLICATE_USERNAME);
+        }
+        if (memberRepository.findByEmail(dto.getEmail()).isPresent()) {
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+        }
     }
 
 
