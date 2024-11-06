@@ -163,5 +163,8 @@ public class MemberService {
         }
     }
 
-
+    // 중복검사 버튼 API
+    public boolean isUsernameDuplicate(String username) {
+        return memberRepository.findByUsername(username).isPresent();
+    }
 }

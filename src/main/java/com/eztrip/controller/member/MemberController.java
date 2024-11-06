@@ -7,6 +7,7 @@ import com.eztrip.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
@@ -84,5 +85,17 @@ public class MemberController {
         response.put("message", "Password has been reset successfully.");
 
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 중복검사 버튼 API
+     */
+    @PostMapping("/check-username")
+    public ResponseEntity<Void> checkUsernameDuplicate(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        if (memberService.isUsernameDuplicate(username)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 중복일 경우 409 반환
+        }
+        return ResponseEntity.ok().build(); // 중복이 아닐 경우 200 반환
     }
 }
