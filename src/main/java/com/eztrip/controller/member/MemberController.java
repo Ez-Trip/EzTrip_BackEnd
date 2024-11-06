@@ -98,4 +98,22 @@ public class MemberController {
         }
         return ResponseEntity.ok().build(); // 중복이 아닐 경우 200 반환
     }
+
+    @PostMapping("/check-nickname")
+    public ResponseEntity<Void> checkNicknameDuplicate(@RequestBody Map<String, String> request) {
+        String nickname = request.get("nickname");
+        if (memberService.isNicknameDuplicate(nickname)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 중복일 경우 409 반환
+        }
+        return ResponseEntity.ok().build(); // 중복이 아닐 경우 200 반환
+    }
+
+    @PostMapping("/check-email")
+    public ResponseEntity<Void> checkEmailDuplicate(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        if (memberService.isEmailDuplicate(email)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 중복일 경우 409 반환
+        }
+        return ResponseEntity.ok().build(); // 중복이 아닐 경우 200 반환
+    }
 }

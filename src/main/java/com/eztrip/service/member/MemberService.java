@@ -164,7 +164,16 @@ public class MemberService {
     }
 
     // 중복검사 버튼 API
+    // 아이디
     public boolean isUsernameDuplicate(String username) {
         return memberRepository.findByUsername(username).isPresent();
+    }
+    // 닉네임
+    public boolean isNicknameDuplicate(String nickname) {
+        return memberRepository.findByNickname(nickname).isPresent();
+    }
+    //이메일
+    public boolean isEmailDuplicate(String email) {
+        return memberRepository.findByEmail(email).isPresent();
     }
 }
