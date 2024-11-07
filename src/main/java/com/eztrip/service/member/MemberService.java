@@ -87,7 +87,7 @@ public class MemberService {
 
         Member loginMember = findByUsernameAndPassword(username, password);
 
-        JwtTokenDto token = tokenManager.createJwtTokenDto(loginMember.getId(), loginMember.getUsername(), loginMember.getRole());
+        JwtTokenDto token = tokenManager.createJwtTokenDto(loginMember.getId(), loginMember.getUsername(), loginMember.getNickname(),loginMember.getRole());
 
         return token;
     }
