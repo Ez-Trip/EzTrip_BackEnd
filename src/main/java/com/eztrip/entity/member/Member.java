@@ -38,6 +38,7 @@ public class Member {
     private Integer age;
     private Boolean push;
     private Boolean information;
+    private  String name;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -59,7 +60,7 @@ public class Member {
 
     @Builder
     public Member(String username, String email, String password, String nickname, String phoneNumber, String image,
-                  String birth, String gender, Integer age, Role role, Boolean push, Boolean information) {
+                  String birth, String gender, Integer age, Role role, Boolean push, Boolean information, String name) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -72,6 +73,7 @@ public class Member {
         this.role = role;
         this.push = push;
         this.information = information;
+        this.name = name;
     }
 
     public Member hashPassword(PasswordEncoder encoder) {
@@ -97,6 +99,7 @@ public class Member {
         this.birth = updateDto.birth();
         this.gender = updateDto.gender();
         this.age = updateDto.age();
+        this.name = updateDto.name();
     }
 
     public void addSchedule(Schedule schedule) {

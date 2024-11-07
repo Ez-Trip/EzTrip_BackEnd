@@ -3,6 +3,7 @@ package com.eztrip.service.admin;
 import com.eztrip.entity.member.Member;
 import com.eztrip.entity.member.Role;
 import com.eztrip.entity.schedule.Schedule;
+import com.eztrip.entity.sns.SnsPost;
 import com.eztrip.repository.member.MemberRepository;
 import com.eztrip.repository.schedule.ScheduleRepository;
 import com.eztrip.repository.sns.SnsPostRepository;
@@ -40,6 +41,11 @@ public class AdminService {
         Member member = getUserById(id);
         member.setRole(Role.from(role));  // 역할 변경
         return memberRepository.save(member);
+    }
+
+    // 모든 SNS 조회
+    public List<SnsPost> getAllSnspost() {
+        return snsPostRepository.findAll();
     }
 
     // 모든 스케줄 조회

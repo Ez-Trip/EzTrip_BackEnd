@@ -28,17 +28,18 @@ public class TokenManager {
     @Value("${token.secret}")
     private String tokenSecret;
 
-    public JwtTokenDto createJwtTokenDto(Long id, String username, String nickname, Role role) {
+    public JwtTokenDto createJwtTokenDto(Long id, String username, String nickname, Role role, String name) {
         Date accessTokenExpireTime = createAccessTokenExpireTime();
         Date refreshTokenExpireTime = createRefreshTokenExpireTime();
 
-        String accessToken = createAccessToken(id, username, nickname, role, accessTokenExpireTime);
+        String accessToken = createAccessToken(id, username, nickname, role, name, accessTokenExpireTime);
         String refreshToken = createRefreshToken(id, refreshTokenExpireTime);
 
         return JwtTokenDto.builder()
                 .id(id)
                 .username(username)
                 .nickname(nickname)
+                .name(name)
                 .role(role)
                 .grantType(GrantType.BEARER.getType())
                 .accessToken(accessToken)
@@ -56,7 +57,7 @@ public class TokenManager {
         return new Date(System.currentTimeMillis() + refreshTokenExpirationTime);
     }
 
-    public String createAccessToken(Long id, String username, String nickname, Role role, Date expirationTime) {
+    public String createAccessToken(Long id, String username, String nickname, Role role, String name, Date expirationTime) {
         return Jwts.builder()
                 .setSubject(TokenType.ACCESS.name())
                 .setIssuedAt(new Date())
@@ -65,6 +66,7 @@ public class TokenManager {
                 .claim("username", username)
                 .claim("nickname",nickname)
                 .claim("role", role.name())
+                .claim("name",name)
                 .signWith(SignatureAlgorithm.HS512, tokenSecret.getBytes(StandardCharsets.UTF_8))
                 .setHeaderParam("type", "JWT")
                 .compact();

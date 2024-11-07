@@ -58,7 +58,7 @@ public class MemberService {
                 .birth(dto.getBirth())
                 .gender(dto.getGender())
                 .age(dto.getAge())
-                .role(Role.USER)
+                .role(Role.ADMIN) // 나중에 USER로 바꾸기
                 .push(dto.getPush())
                 .information(dto.getInformation())
                 .build();
@@ -87,7 +87,7 @@ public class MemberService {
 
         Member loginMember = findByUsernameAndPassword(username, password);
 
-        JwtTokenDto token = tokenManager.createJwtTokenDto(loginMember.getId(), loginMember.getUsername(), loginMember.getNickname(),loginMember.getRole());
+        JwtTokenDto token = tokenManager.createJwtTokenDto(loginMember.getId(), loginMember.getUsername(), loginMember.getNickname(),loginMember.getRole(),loginMember.getName());
 
         return token;
     }

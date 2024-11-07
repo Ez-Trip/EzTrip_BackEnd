@@ -2,6 +2,7 @@ package com.eztrip.controller.admin;
 
 import com.eztrip.entity.member.Member;
 import com.eztrip.entity.schedule.Schedule;
+import com.eztrip.entity.sns.SnsPost;
 import com.eztrip.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,11 @@ public class AdminController {
     @PatchMapping("/users/{id}/role")
     public ResponseEntity<Member> changeUserRole(@PathVariable Long id, @RequestBody String role) {
         return ResponseEntity.ok(adminService.changeUserRole(id, role));
+    }
+    // 모든 SNS 조회
+    @GetMapping("/snspost")
+    public ResponseEntity<List<SnsPost>> getAllSnspost() {
+        return ResponseEntity.ok(adminService.getAllSnspost());
     }
 
     // 모든 스케줄 조회

@@ -10,5 +10,6 @@ public record MemberUpdate(String username,
                            String image,
                            String birth,
                            String gender,
-                           Integer age
+                           Integer age,
+                           String name
 ) { }

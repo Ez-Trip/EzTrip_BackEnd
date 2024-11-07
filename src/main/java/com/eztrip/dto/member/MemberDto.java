@@ -31,6 +31,8 @@ public class MemberDto {
         private Boolean information;
 
         private String categories;
+
+        private String name;
     }
 
     @Data
