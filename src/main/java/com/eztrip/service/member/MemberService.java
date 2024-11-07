@@ -165,15 +165,28 @@ public class MemberService {
 
     // 중복검사 버튼 API
     // 아이디
+    @Transactional
     public boolean isUsernameDuplicate(String username) {
         return memberRepository.findByUsername(username).isPresent();
     }
     // 닉네임
+    @Transactional
     public boolean isNicknameDuplicate(String nickname) {
         return memberRepository.findByNickname(nickname).isPresent();
     }
     //이메일
+    @Transactional
     public boolean isEmailDuplicate(String email) {
         return memberRepository.findByEmail(email).isPresent();
+    }
+
+    // 아이디와 이메일로 확인
+    @Transactional
+    public Member findByUsernameAndEmail(String username, String email) {
+
+        Member findMember = memberRepository.findByUsernameAndEmail(username,email)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
+
+        return findMember;
     }
 }

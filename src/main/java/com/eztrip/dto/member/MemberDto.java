@@ -1,5 +1,6 @@
 package com.eztrip.dto.member;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 public class MemberDto {
@@ -45,5 +46,11 @@ public class MemberDto {
         private String username;
         private String email;
         private String newPassword;
+    }
+
+    @Data
+    public static class FindRequest {
+        private String username;
+        private String email;
     }
 }

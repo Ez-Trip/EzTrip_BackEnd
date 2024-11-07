@@ -2,6 +2,7 @@ package com.eztrip.controller.member;
 
 import com.eztrip.dto.member.MemberDto;
 import com.eztrip.dto.member.MemberUpdate;
+import com.eztrip.entity.member.Member;
 import com.eztrip.global.token.JwtTokenDto;
 import com.eztrip.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -115,5 +116,16 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 중복일 경우 409 반환
         }
         return ResponseEntity.ok().build(); // 중복이 아닐 경우 200 반환
+    }
+
+    /**
+     * 아이디와 이메일로 회원 조회 API
+     */
+    @PostMapping("/findMember")
+    public ResponseEntity<Member> findMemberByUsernameAndEmail(
+            @RequestBody MemberDto.FindRequest request) {
+
+        Member member = memberService.findByUsernameAndEmail(request.getUsername(), request.getEmail());
+        return ResponseEntity.ok(member);
     }
 }
