@@ -28,11 +28,11 @@ public class TokenManager {
     @Value("${token.secret}")
     private String tokenSecret;
 
-    public JwtTokenDto createJwtTokenDto(Long id, String username, String nickname, Role role, String name) {
+    public JwtTokenDto createJwtTokenDto(Long id, String username, String nickname, Role role, String name, String image) {
         Date accessTokenExpireTime = createAccessTokenExpireTime();
         Date refreshTokenExpireTime = createRefreshTokenExpireTime();
 
-        String accessToken = createAccessToken(id, username, nickname, role, name, accessTokenExpireTime);
+        String accessToken = createAccessToken(id, username, nickname, role, name, image, accessTokenExpireTime);
         String refreshToken = createRefreshToken(id, refreshTokenExpireTime);
 
         return JwtTokenDto.builder()
@@ -40,6 +40,7 @@ public class TokenManager {
                 .username(username)
                 .nickname(nickname)
                 .name(name)
+                .image(image)
                 .role(role)
                 .grantType(GrantType.BEARER.getType())
                 .accessToken(accessToken)
@@ -57,7 +58,7 @@ public class TokenManager {
         return new Date(System.currentTimeMillis() + refreshTokenExpirationTime);
     }
 
-    public String createAccessToken(Long id, String username, String nickname, Role role, String name, Date expirationTime) {
+    public String createAccessToken(Long id, String username, String nickname, Role role, String name, String image, Date expirationTime) {
         return Jwts.builder()
                 .setSubject(TokenType.ACCESS.name())
                 .setIssuedAt(new Date())
@@ -65,6 +66,7 @@ public class TokenManager {
                 .claim("id", id)
                 .claim("username", username)
                 .claim("nickname",nickname)
+                .claim("image",image)
                 .claim("role", role.name())
                 .claim("name",name)
                 .signWith(SignatureAlgorithm.HS512, tokenSecret.getBytes(StandardCharsets.UTF_8))

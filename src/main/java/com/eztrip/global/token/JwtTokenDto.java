@@ -29,6 +29,7 @@ public class JwtTokenDto {
 
     private String accessToken;
     private  String name;
+    private  String image;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date accessTokenExpireTime;
@@ -43,7 +44,8 @@ public class JwtTokenDto {
         return "JwtTokenDto{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", name'" + name + '\'' +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
                 ", role=" + role +
                 ", grantType='" + grantType + '\'' +
                 ", accessToken='" + accessToken + '\'' +
