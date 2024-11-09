@@ -128,4 +128,14 @@ public class MemberController {
         Member member = memberService.findByUsernameAndEmail(request.getUsername(), request.getEmail());
         return ResponseEntity.ok(member);
     }
+
+    /**
+     * 자신의 모든 등록 정보를 가져오는 API
+     */
+    @GetMapping("/my-info")
+    @Operation(summary = "내 정보 조회", description = "accessToken을 사용하여 자신의 모든 등록 정보를 가져옵니다.")
+    public ResponseEntity<Member> getMyInfo(@RequestHeader("Authorization") String token) {
+        Member member = memberService.getMyInfo(token);
+        return ResponseEntity.ok(member);
+    }
 }

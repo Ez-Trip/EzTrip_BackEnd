@@ -189,4 +189,11 @@ public class MemberService {
 
         return findMember;
     }
+
+    // Token으로 id 확인 후 조회하는 부분
+    public Member getMyInfo(String token) {
+        String accessToken = token.substring(7);  // "Bearer " 제거
+        Long userId = tokenManager.getUserIdFromToken(accessToken);
+        return findById(userId);
+    }
 }
