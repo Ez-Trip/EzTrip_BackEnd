@@ -1,5 +1,7 @@
 package com.eztrip.service.admin;
 
+import com.eztrip.dto.member.MemberResponseDto;
+import com.eztrip.entity.category.MemberCategory;
 import com.eztrip.entity.member.Member;
 import com.eztrip.entity.member.Role;
 import com.eztrip.entity.schedule.Schedule;
@@ -9,7 +11,6 @@ import com.eztrip.repository.schedule.ScheduleRepository;
 import com.eztrip.repository.sns.SnsPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -25,10 +26,11 @@ public class AdminService {
         return memberRepository.findAll();
     }
 
-    // 특정 사용자 조회
-    public Member getUserById(Long id) {
-        return memberRepository.findById(id)
+    // 특정 사용자 조회 - 선호도 포함
+    public MemberResponseDto getUserById(Long id) {
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. ID: " + id));
+        return new MemberResponseDto(member);
     }
 
     // 사용자 삭제
@@ -38,7 +40,8 @@ public class AdminService {
 
     // 사용자 역할 변경
     public Member changeUserRole(Long id, String role) {
-        Member member = getUserById(id);
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. ID: " + id));
         member.setRole(Role.from(role));  // 역할 변경
         return memberRepository.save(member);
     }

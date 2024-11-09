@@ -1,5 +1,6 @@
 package com.eztrip.controller.admin;
 
+import com.eztrip.dto.member.MemberResponseDto;
 import com.eztrip.entity.member.Member;
 import com.eztrip.entity.schedule.Schedule;
 import com.eztrip.entity.sns.SnsPost;
@@ -27,14 +28,14 @@ public class AdminController {
     public ResponseEntity<List<Member>> getAllUsers() {
         log.info("get user List");
         List<Member> users = adminService.getAllUsers();
-        //return ResponseEntity.ok(users);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    // 특정 사용자 조회
+    // 특정 사용자 조회 (선호도 정보 포함)
     @GetMapping("/users/{id}")
-    public ResponseEntity<Member> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(adminService.getUserById(id));
+    public ResponseEntity<MemberResponseDto> getUserById(@PathVariable Long id) {
+        MemberResponseDto memberResponse = adminService.getUserById(id);
+        return ResponseEntity.ok(memberResponse);
     }
 
     // 사용자 삭제
@@ -49,6 +50,7 @@ public class AdminController {
     public ResponseEntity<Member> changeUserRole(@PathVariable Long id, @RequestBody String role) {
         return ResponseEntity.ok(adminService.changeUserRole(id, role));
     }
+
     // 모든 SNS 조회
     @GetMapping("/snspost")
     public ResponseEntity<List<SnsPost>> getAllSnspost() {
