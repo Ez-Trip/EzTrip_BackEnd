@@ -61,6 +61,7 @@ public class MemberService {
                 .role(Role.ADMIN) // 나중에 USER로 바꾸기
                 .push(dto.getPush())
                 .information(dto.getInformation())
+                .name(dto.getName())
                 .build();
 
         joinMember.hashPassword(encoder); // 비밀번호 암호화

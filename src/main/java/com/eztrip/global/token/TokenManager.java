@@ -66,9 +66,9 @@ public class TokenManager {
                 .claim("id", id)
                 .claim("username", username)
                 .claim("nickname",nickname)
+                .claim("name",name)
                 .claim("image",image)
                 .claim("role", role.name())
-                .claim("name",name)
                 .signWith(SignatureAlgorithm.HS512, tokenSecret.getBytes(StandardCharsets.UTF_8))
                 .setHeaderParam("type", "JWT")
                 .compact();
