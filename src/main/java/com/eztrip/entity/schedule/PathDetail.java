@@ -35,7 +35,28 @@ public class PathDetail {
     @JsonBackReference  // 순환 참조 방지
     private Schedule schedule;
 
+    // Schedule 설정
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    // placeName 설정
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;  // 필드 값 업데이트
+    }
+
+    // address 설정
+    public void setAddress(String address) {
+        this.address = address;  // 필드 값 업데이트
+    }
+
+    // price 설정
+    public void setPrice(int price) {
+        this.price = price;  // 필드 값 업데이트
+    }
+
+    // segmentType 설정
+    public void setSegmentType(String segmentType) {
+        this.segmentType = segmentType;  // 필드 값 업데이트
     }
 }

@@ -1,11 +1,13 @@
 package com.eztrip.controller.schedule;
 
+import com.eztrip.dto.schedule.ScheduleDto;
 import com.eztrip.dto.schedule.ScheduleRequest;
 import com.eztrip.dto.Recommendation.RecommendationRequest;
 import com.eztrip.dto.Recommendation.RecommendationResponse;
 import com.eztrip.entity.schedule.Schedule;
 import com.eztrip.service.schedule.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -46,6 +48,14 @@ public class ScheduleController {
     public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
         scheduleService.deleteSchedule(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // 스케쥴 업데이트
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<ScheduleDto> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequest scheduleRequest) {
+        Schedule updatedSchedule = scheduleService.updateSchedule(id, scheduleRequest);
+        ScheduleDto updatedScheduleDto = new ScheduleDto(updatedSchedule);  // ScheduleDto로 변환
+        return new ResponseEntity<>(updatedScheduleDto, HttpStatus.OK);  // 업데이트된 ScheduleDto 반환
     }
 
     // AI 모델과 통신하여 추천 경로 생성

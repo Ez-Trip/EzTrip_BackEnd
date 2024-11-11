@@ -1,12 +1,17 @@
 package com.eztrip.dto.schedule;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class ScheduleRequest {
     private String title;       // 스케줄 제목
     private String path;        // 경로 (장소나 목적지)
+
+    @JsonFormat(pattern = "yyyy-MM-dd")  // 날짜 포맷 지정
     private LocalDate date;     // 날짜
+
     private String image;       // 이미지 경로 (URL)
     private Long memberId;      // 사용자 ID (memberId)
     private int price;          // 총 금액
