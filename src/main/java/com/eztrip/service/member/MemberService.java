@@ -3,6 +3,7 @@ package com.eztrip.service.member;
 import com.eztrip.dto.member.MemberDto;
 import com.eztrip.dto.member.MemberUpdate;
 import com.eztrip.entity.category.Category;
+import com.eztrip.entity.category.MemberCategory;
 import com.eztrip.entity.member.Member;
 import com.eztrip.entity.member.Role;
 import com.eztrip.global.error.ErrorCode;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -58,7 +60,7 @@ public class MemberService {
                 .birth(dto.getBirth())
                 .gender(dto.getGender())
                 .age(dto.getAge())
-                .role(Role.ADMIN) // 나중에 USER로 바꾸기
+                .role(Role.USER) // 나중에 USER로 바꾸기
                 .push(dto.getPush())
                 .information(dto.getInformation())
                 .name(dto.getName())
@@ -192,9 +194,35 @@ public class MemberService {
     }
 
     // Token으로 id 확인 후 조회하는 부분
-    public Member getMyInfo(String token) {
+    public MemberDto.MemberInfoResponse getMyInfo(String token) {
         String accessToken = token.substring(7);  // "Bearer " 제거
         Long userId = tokenManager.getUserIdFromToken(accessToken);
-        return findById(userId);
+
+        Member member = findById(userId);
+        List<MemberCategory> preferences = member.getMemberCategories();  // 선호도 정보 가져오기
+
+        return new MemberDto.MemberInfoResponse(member, preferences);
+    }
+
+    // 선호도 수정
+    @Transactional
+    public void updateCategories(String token, String categories) {
+        String accessToken = token.substring(7);  // "Bearer " 제거
+        Long userId = tokenManager.getUserIdFromToken(accessToken);
+
+        // 사용자 조회
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
+
+        // 기존 MemberCategory 항목을 DB에서 삭제
+        memberCategoryService.deleteByMemberId(userId);
+
+        // 새로운 선호도 설정
+        String[] categoryIds = categories.split("(?<=\\d)(?=\\D)");
+        for (int i = 0; i < categoryIds.length; i++) {
+            Category category = categoryRepository.findById(categoryIds[i])
+                    .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND_CATEGORY));
+            memberCategoryService.createMemberCategory(member, category, i + 1);
+        }
     }
 }

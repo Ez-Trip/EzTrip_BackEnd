@@ -25,4 +25,9 @@ public class MemberCategoryService {
 
         memberCategoryRepository.save(createMemberCategory);
     }
+
+    @Transactional
+    public void deleteByMemberId(Long memberId) {
+        memberCategoryRepository.deleteByMemberId(memberId);  // DB에서 기존 선호도 삭제
+    }
 }

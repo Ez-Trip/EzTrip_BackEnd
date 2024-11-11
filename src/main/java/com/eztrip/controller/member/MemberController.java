@@ -134,8 +134,22 @@ public class MemberController {
      */
     @GetMapping("/my-info")
     @Operation(summary = "내 정보 조회", description = "accessToken을 사용하여 자신의 모든 등록 정보를 가져옵니다.")
-    public ResponseEntity<Member> getMyInfo(@RequestHeader("Authorization") String token) {
-        Member member = memberService.getMyInfo(token);
-        return ResponseEntity.ok(member);
+    public ResponseEntity<MemberDto.MemberInfoResponse> getMyInfo(@RequestHeader("Authorization") String token) {
+        MemberDto.MemberInfoResponse memberInfo = memberService.getMyInfo(token);
+        return ResponseEntity.ok(memberInfo);
+    }
+
+
+    /**
+     * 회원의 선호도 (categories) 수정 API
+     */
+    @PatchMapping("/update-categories")
+    @Operation(summary = "선호도 수정", description = "accessToken을 사용하여 회원의 선호도를 수정합니다.")
+    public ResponseEntity<String> updateCategories(
+            @RequestHeader("Authorization") String token,
+            @RequestBody MemberDto.UpdateCategories request) {
+
+        memberService.updateCategories(token, request.getCategories());
+        return ResponseEntity.ok("Categories updated successfully.");
     }
 }
