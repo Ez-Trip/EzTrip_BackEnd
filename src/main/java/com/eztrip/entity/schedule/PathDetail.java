@@ -17,15 +17,17 @@ public class PathDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "segment_code")
     private String segmentCode;  // 경로 세그먼트 코드 (A1, B2 등)
 
+    @Column(name = "place_name")
     private String placeName;    // 장소 이름
 
     private String address;      // 주소
 
     private int price;           // 가격
 
+    @Column(name = "segment_type")
     private String segmentType;  // 세그먼트 유형 (예: 음식점, 숙박업소 등)
 
     @ManyToOne(fetch = FetchType.LAZY)
