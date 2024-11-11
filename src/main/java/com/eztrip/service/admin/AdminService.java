@@ -9,6 +9,7 @@ import com.eztrip.entity.sns.SnsPost;
 import com.eztrip.repository.member.MemberRepository;
 import com.eztrip.repository.schedule.ScheduleRepository;
 import com.eztrip.repository.sns.SnsPostRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -49,6 +50,13 @@ public class AdminService {
     // 모든 SNS 조회
     public List<SnsPost> getAllSnspost() {
         return snsPostRepository.findAll();
+    }
+
+    // SNS 삭제
+    @Transactional
+    public void deleteSnspost(Long id) {
+        // SNS 게시물을 ID로 삭제
+        snsPostRepository.deleteById(id);
     }
 
     // 모든 스케줄 조회

@@ -57,6 +57,13 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAllSnspost());
     }
 
+    // SNS 삭제
+    @DeleteMapping("/snspost/{id}")
+    public ResponseEntity<Void> deleteSnspost(@PathVariable Long id) {
+        adminService.deleteSnspost(id);
+        return ResponseEntity.noContent().build();
+    }
+
     // 모든 스케줄 조회
     @GetMapping("/schedules")
     public ResponseEntity<List<Schedule>> getAllSchedules() {
