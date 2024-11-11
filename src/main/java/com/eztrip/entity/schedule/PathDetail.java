@@ -17,6 +17,7 @@ public class PathDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "segment_code")
     private String segmentCode;  // 경로 세그먼트 코드 (A1, B2 등)
 
@@ -31,7 +32,7 @@ public class PathDetail {
     private String segmentType;  // 세그먼트 유형 (예: 음식점, 숙박업소 등)
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id")
+    @JoinColumn(name = "schedule_id")  // schedule_id와 schedule의 id 컬럼이 동일한 데이터 타입이어야 함
     @JsonBackReference  // 순환 참조 방지
     private Schedule schedule;
 
