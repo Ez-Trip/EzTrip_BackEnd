@@ -7,6 +7,7 @@ import com.eztrip.entity.schedule.PathDetail;
 import com.eztrip.entity.schedule.Schedule;
 import com.eztrip.repository.member.MemberRepository;
 import com.eztrip.repository.schedule.ScheduleRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,8 +56,12 @@ public class ScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public List<Schedule> getAllSchedules() {
-        return scheduleRepository.findAll();
+    public List<Schedule> getSchedulesByMemberId(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. ID: " + memberId));
+
+        // 해당 회원의 모든 스케줄을 조회
+        return scheduleRepository.findByMember(member);
     }
 
     @Transactional(readOnly = true)

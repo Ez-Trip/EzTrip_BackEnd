@@ -6,6 +6,7 @@ import com.eztrip.dto.Recommendation.RecommendationRequest;
 import com.eztrip.dto.Recommendation.RecommendationResponse;
 import com.eztrip.entity.schedule.Schedule;
 import com.eztrip.service.schedule.ScheduleService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,29 +30,32 @@ public class ScheduleController {
         return ResponseEntity.ok(createdSchedule);
     }
 
-    // 모든 스케줄 조회
-    @GetMapping
-    public ResponseEntity<List<Schedule>> getAllSchedules() {
-        List<Schedule> schedules = scheduleService.getAllSchedules();
+    // 회원 id로 나의 모든 스케줄 조회
+    @GetMapping("all/{member_id}")
+    @Operation(summary = "회원 고유id로 나의 모든 스케쥴 조회")
+    public ResponseEntity<List<Schedule>> getSchedulesByMemberId(@PathVariable Long memberId) {
+        List<Schedule> schedules = scheduleService.getSchedulesByMemberId(memberId);
         return ResponseEntity.ok(schedules);
     }
 
     // ID로 스케줄 조회
-    @GetMapping("/{id}")
+    @GetMapping("/{schedule_id}")
+    @Operation(summary = "스케쥴 고유id로 스케쥴 조회")
     public ResponseEntity<Schedule> getScheduleById(@PathVariable Long id) {
         Schedule schedule = scheduleService.getScheduleById(id);
         return ResponseEntity.ok(schedule);
     }
 
     // 스케줄 삭제
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{schdule_id}")
+    @Operation(summary = "스케쥴 id 로 삭제")
     public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
         scheduleService.deleteSchedule(id);
         return ResponseEntity.noContent().build();
     }
 
     // 스케쥴 업데이트
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/update/{schedule_id}")
     public ResponseEntity<ScheduleDto> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequest scheduleRequest) {
         Schedule updatedSchedule = scheduleService.updateSchedule(id, scheduleRequest);
         ScheduleDto updatedScheduleDto = new ScheduleDto(updatedSchedule);  // ScheduleDto로 변환
