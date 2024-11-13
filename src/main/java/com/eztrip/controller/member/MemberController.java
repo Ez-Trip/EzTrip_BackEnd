@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.HashMap;
@@ -65,13 +66,11 @@ public class MemberController {
     /**
      * 회원 정보 수정 API
      */
-    @PatchMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody MemberUpdate updateDto,
-                                    @PathVariable("id") Long id) {
-
-        memberService.update(id, updateDto);
-
-        return ResponseEntity.ok("success");
+    @PatchMapping("/update-info")
+    public ResponseEntity<Member> updateMemberInfo(@RequestBody MemberDto.UpdateInfo updateInfo, @AuthenticationPrincipal Member loggedInMember) {
+        // 서비스에서 updateInfo를 처리하여 Member 객체 반환
+        Member updatedMember = memberService.updateMemberInfo(loggedInMember.getId(), updateInfo);
+        return ResponseEntity.ok(updatedMember);
     }
 
     /**

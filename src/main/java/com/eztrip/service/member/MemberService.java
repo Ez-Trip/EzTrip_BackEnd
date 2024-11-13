@@ -132,13 +132,21 @@ public class MemberService {
         memberRepository.deleteById(id);
     }
 
-    // ID 찾기
+    // 개인정보 수정
     @Transactional
-    public void update(Long id, MemberUpdate updateDto) {
+    public Member updateMemberInfo(Long memberId, MemberDto.UpdateInfo updateInfo) {
+        // UpdateInfo를 MemberUpdate로 변환
+        MemberUpdate updateDto = updateInfo.toMemberUpdate();
 
-        Member findMember = findById(id);
+        // 기존 회원 정보 조회
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. ID: " + memberId));
 
-        findMember.update(updateDto);
+        // DTO를 통해 멤버 업데이트
+        member.update(updateDto);  // 이미 만들어둔 update 메서드를 호출
+
+        // 수정된 회원 정보 저장
+        return memberRepository.save(member);
     }
 
     // PW 재설정

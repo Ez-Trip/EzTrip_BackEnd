@@ -103,4 +103,34 @@ public class MemberDto {
                     .collect(Collectors.joining());
         }
     }
+
+    // 개인정보 수정
+    @Data
+    public static class UpdateInfo {
+        private String username;
+        private String email;
+        private String nickname;
+        private String phoneNumber;
+        private String image;
+        private String birth;
+        private String gender;
+        private Integer age;
+        private String name;
+
+        // MemberUpdate로 변환하는 메서드 추가
+        public MemberUpdate toMemberUpdate() {
+            return new MemberUpdate(
+                    username,
+                    email,
+                    null,  // password는 업데이트하지 않으므로 null로 설정
+                    nickname,
+                    phoneNumber,
+                    image,
+                    birth,
+                    gender,
+                    age,
+                    name
+            );
+        }
+    }
 }
