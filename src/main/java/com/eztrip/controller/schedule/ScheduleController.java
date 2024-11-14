@@ -25,6 +25,7 @@ public class ScheduleController {
 
     // 스케줄 생성
     @PostMapping
+    @Operation(summary = "스케쥴 생성")
     public ResponseEntity<Schedule> createSchedule(@RequestBody ScheduleRequest scheduleRequest) {
         Schedule createdSchedule = scheduleService.createSchedule(scheduleRequest);
         return ResponseEntity.ok(createdSchedule);
@@ -56,6 +57,7 @@ public class ScheduleController {
 
     // 스케쥴 업데이트
     @PatchMapping("/update/{schedule_id}")
+    @Operation(summary = "스케쥴 수정 {스케쥴 고유 id}")
     public ResponseEntity<ScheduleDto> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequest scheduleRequest) {
         Schedule updatedSchedule = scheduleService.updateSchedule(id, scheduleRequest);
         ScheduleDto updatedScheduleDto = new ScheduleDto(updatedSchedule);  // ScheduleDto로 변환
@@ -64,6 +66,7 @@ public class ScheduleController {
 
     // AI 모델과 통신하여 추천 경로 생성
     @PostMapping("/recommend")
+    @Operation(summary = "스케쥴 추천받기")
     public ResponseEntity<Schedule> recommendAndCreateSchedule(@RequestBody RecommendationRequest request) {
         String flaskUrl = "http://localhost:3309/recommend";
 
