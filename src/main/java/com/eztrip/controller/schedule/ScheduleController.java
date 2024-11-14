@@ -32,7 +32,7 @@ public class ScheduleController {
     }
 
     // 회원 id로 나의 모든 스케줄 조회
-    @GetMapping("all/{member_id}")
+    @GetMapping("all/{memberId}")
     @Operation(summary = "회원 고유id로 나의 모든 스케쥴 조회")
     public ResponseEntity<List<Schedule>> getSchedulesByMemberId(@PathVariable Long memberId) {
         List<Schedule> schedules = scheduleService.getSchedulesByMemberId(memberId);
@@ -40,7 +40,7 @@ public class ScheduleController {
     }
 
     // ID로 스케줄 조회
-    @GetMapping("/{schedule_id}")
+    @GetMapping("/{id}")
     @Operation(summary = "스케쥴 고유id로 스케쥴 조회")
     public ResponseEntity<Schedule> getScheduleById(@PathVariable Long id) {
         Schedule schedule = scheduleService.getScheduleById(id);
@@ -48,7 +48,7 @@ public class ScheduleController {
     }
 
     // 스케줄 삭제
-    @DeleteMapping("/{schdule_id}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "스케쥴 id 로 삭제")
     public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
         scheduleService.deleteSchedule(id);
@@ -56,7 +56,7 @@ public class ScheduleController {
     }
 
     // 스케쥴 업데이트
-    @PatchMapping("/update/{schedule_id}")
+    @PatchMapping("/update/{id}")
     @Operation(summary = "스케쥴 수정 {스케쥴 고유 id}")
     public ResponseEntity<ScheduleDto> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequest scheduleRequest) {
         Schedule updatedSchedule = scheduleService.updateSchedule(id, scheduleRequest);
