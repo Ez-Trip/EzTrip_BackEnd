@@ -9,4 +9,5 @@ public class SnsPostRequest {
     private Long memberId;
     private String image;
     private String dateCourse;
+    private Long scheduleId;
 }
