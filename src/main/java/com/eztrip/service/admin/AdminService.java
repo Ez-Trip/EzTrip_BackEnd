@@ -34,9 +34,24 @@ public class AdminService {
         return new MemberResponseDto(member);
     }
 
-    // 사용자 삭제
+    // 사용자 삭제 시 연관된 schedule과 snsPost 삭제
+    @Transactional
     public void deleteUser(Long id) {
-        memberRepository.deleteById(id);
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. ID: " + id));
+
+        // 1. 회원과 연관된 모든 스케줄 삭제
+        List<Schedule> schedules = scheduleRepository.findByMember(member);
+        for (Schedule schedule : schedules) {
+            // 1-1. 해당 스케줄과 연관된 SNS 게시물 삭제
+            snsPostRepository.deleteBySchedule(schedule);
+        }
+
+        // 2. 해당 회원의 스케줄 삭제
+        scheduleRepository.deleteAll(schedules);
+
+        // 3. 회원 삭제
+        memberRepository.delete(member);
     }
 
     // 사용자 역할 변경
