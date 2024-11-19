@@ -32,25 +32,25 @@ public class SnsPostController {
     }
 
     @GetMapping
-    @Operation(summary = "모든 snspost 조회")
+    @Operation(summary = "모든 sns 포스트 조회")
     public List<SnsPostDto> getAllPosts() {
         return snsPostService.getAllPosts()
                 .stream()
-                .map(SnsPostDto::new)
+                .map(SnsPostDto::new)  // Lazy 객체를 초기화하고 DTO 변환
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/member/{memberId}")
-    @Operation(summary = "Member 고유 id 값으로 snspost조회")
+    @Operation(summary = "회원 고유 id 값으로 sns 포스트 조회")
     public List<SnsPostDto> getPostsByMemberId(@PathVariable Long memberId) {
         return snsPostService.getPostsByMemberId(memberId)
                 .stream()
-                .map(SnsPostDto::new)
+                .map(SnsPostDto::new)  // SnsPost -> SnsPostDto 변환
                 .collect(Collectors.toList());
     }
 
     @DeleteMapping("/{postId}")
-    @Operation(summary = "snspost 고유 id로 삭제")
+    @Operation(summary = "SnsPost 고유 id로 삭제")
     public void deletePost(@PathVariable Long postId) {
         snsPostService.deletePost(postId);
     }

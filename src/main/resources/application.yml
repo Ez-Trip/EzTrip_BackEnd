@@ -1,6 +1,9 @@
 spring:
   application:
     name: eztrip
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
 
   mvc:
     pathmatch:

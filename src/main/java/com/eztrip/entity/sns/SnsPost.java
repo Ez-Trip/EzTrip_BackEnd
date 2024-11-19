@@ -2,6 +2,8 @@ package com.eztrip.entity.sns;
 
 import com.eztrip.entity.member.Member;
 import com.eztrip.entity.schedule.Schedule;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +31,7 @@ public class SnsPost {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")  // Schedule과의 관계 설정
+    @JsonIgnore
     private Schedule schedule;  // 연관된 스케줄
 
     public void setMember(Member member) {
